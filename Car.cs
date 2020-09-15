@@ -15,5 +15,6 @@
         public string Type;
         public string Condition;
         public int Doors;
+        public string Invoice;
     }
 }

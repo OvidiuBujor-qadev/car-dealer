@@ -9,7 +9,14 @@ D:\Work\WindowsFormsApp1\obj\Debug\netcoreapp3.1\WindowsFormsApp1.Form1.resource
 D:\Work\WindowsFormsApp1\obj\Debug\netcoreapp3.1\WindowsFormsApp1.csproj.GenerateResource.cache
 D:\Work\WindowsFormsApp1\obj\Debug\netcoreapp3.1\WindowsFormsApp1.AssemblyInfoInputs.cache
 D:\Work\WindowsFormsApp1\obj\Debug\netcoreapp3.1\WindowsFormsApp1.AssemblyInfo.cs
-D:\Work\WindowsFormsApp1\obj\Debug\netcoreapp3.1\WindowsFormsApp1.csproj.CoreCompileInputs.cache
 D:\Work\WindowsFormsApp1\obj\Debug\netcoreapp3.1\WindowsFormsApp1.dll
 D:\Work\WindowsFormsApp1\obj\Debug\netcoreapp3.1\WindowsFormsApp1.pdb
 D:\Work\WindowsFormsApp1\obj\Debug\netcoreapp3.1\WindowsFormsApp1.genruntimeconfig.cache
+D:\Work\WindowsFormsApp1\bin\Debug\netcoreapp3.1\System.Data.SqlClient.dll
+D:\Work\WindowsFormsApp1\bin\Debug\netcoreapp3.1\runtimes\win-arm64\native\sni.dll
+D:\Work\WindowsFormsApp1\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\sni.dll
+D:\Work\WindowsFormsApp1\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\sni.dll
+D:\Work\WindowsFormsApp1\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+D:\Work\WindowsFormsApp1\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+D:\Work\WindowsFormsApp1\obj\Debug\netcoreapp3.1\WindowsFormsApp1.csproj.CoreCompileInputs.cache
+D:\Work\WindowsFormsApp1\obj\Debug\netcoreapp3.1\WindowsFormsApp1.csproj.CopyComplete

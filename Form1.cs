@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Globalization;
 using System.ComponentModel;
 using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace WindowsFormsApp1
 {
@@ -21,6 +24,7 @@ namespace WindowsFormsApp1
         private TextBox TypeBox;
         private TextBox ConditionBox;
         private TextBox DoorsBox;
+        private TextBox InvoiceBox;
         private ErrorProvider appErorProvider;
         private Label LabelBrand;
         private Label LabelModel;
@@ -35,16 +39,48 @@ namespace WindowsFormsApp1
         private Label LabelType;
         private Label LabelCondition;
         private Label LabelDoors;
+        private Label LabelInvoice;
+        private Label LabelAddCars;
+        private Label LabelReports;
         private TabPage TabPageCars;
         private TabPage TabPageConfigurator;
         private TabPage TabPageFinancial;
         private TabPage TabPageAdmin;
-        private Button Button0;
+        private TabPage TabPageReports;
+        private Button ButtonAddCar;
+        private Button ButtonIncoming;
+        private Button ButtonOutgoing;
 
         private DataGridView carsDataGridView = new DataGridView();
+        private DataGridView reportsDataGridView = new DataGridView();
         public Form1()
         {
             this.Load += new EventHandler(Form1_Load);
+        }
+
+        private void LoadData() {
+            using (var connection = new SqlConnection(
+                   "Server=AVG-188;" +
+                   "Database=Cars; Integrated Security=True;" +
+                   "TrustServerCertificate=False;Connection Timeout=30;"
+                   ))
+            {
+                connection.Open();
+                MessageBox.Show("M-am conectat la sql");
+
+                var queryString = "SELECT Brand, Model, Price, Park, Hp, Color, Year, Km, Engine, Fuel, Type, Condition, Doors FROM dbo.CarsApp";
+                var queryString2 = "SELECT Invoice, Date, Brand, Model, Price, Park, Hp, Color, Year, Km, Engine, Fuel, Type, Condition, Doors FROM dbo.CarsApp";
+                var sqlDataAdapter = new SqlDataAdapter(queryString, connection);
+                var sqlDataAdapter2 = new SqlDataAdapter(queryString2, connection);
+
+                DataSet cars = new DataSet();
+                DataSet cars2 = new DataSet();
+                sqlDataAdapter.Fill(cars, "CarsApp");
+                sqlDataAdapter2.Fill(cars2, "CarsApp");
+
+                carsDataGridView.DataSource = cars.Tables["CarsApp"];
+                reportsDataGridView.DataSource = cars2.Tables["CarsApp"];
+            }
         }
         private void Form1_Load(Object sender, EventArgs e)
         {
@@ -52,13 +88,17 @@ namespace WindowsFormsApp1
             InitTextBoxes();
             InitLabels();
             SetupTabControl();
-            SetupDataGridView();
+            SetupDataGridViewCars();
+            SetupDataGridViewReports();
 
             appErorProvider = new ErrorProvider();
+
+            LoadData();
+
         }
         private void SetupLayout()
         {
-            this.Size = new Size(1325, 500);
+            this.Size = new Size(1425, 750);
         }
 
         private void InitTextBoxes()
@@ -76,6 +116,7 @@ namespace WindowsFormsApp1
             TypeBox = ControlsHelper.GenerateTexBox(new Point(900, 200), new TextBoxEventsParameters(null, TextBoxRequired_Validating));
             ConditionBox = ControlsHelper.GenerateTexBox(new Point(1100, 200), new TextBoxEventsParameters(null, TextBoxRequired_Validating));
             DoorsBox = ControlsHelper.GenerateTexBox(new Point(100, 300), new TextBoxEventsParameters(TextBoxOnlyNumbers_TextChanged, TextBoxRequired_Validating));
+            InvoiceBox = ControlsHelper.GenerateTexBox(new Point(300, 300), new TextBoxEventsParameters(null, TextBoxRequired_Validating));
         }
 
         private void InitLabels()
@@ -93,9 +134,12 @@ namespace WindowsFormsApp1
             LabelType = ControlsHelper.GenerateLabelX(new Point(825, 205), "Type");
             LabelCondition = ControlsHelper.GenerateLabelX(new Point(1025, 205), "Condition");
             LabelDoors = ControlsHelper.GenerateLabelX(new Point(25, 305), "Doors");
+            LabelInvoice = ControlsHelper.GenerateLabelX(new Point(225, 305), "Invoice");
+            LabelAddCars = ControlsHelper.GenerateLabelX(new Point(625, 35), "Add Cars");
+            LabelReports = ControlsHelper.GenerateLabelX(new Point(625, 455), "Reports");
         }
 
-        private void InitTabPage4()
+        private void InitTabPageAdmin()
         {
             TabPageAdmin.Controls.Add(BrandBox);
             TabPageAdmin.Controls.Add(ModelBox);
@@ -110,6 +154,7 @@ namespace WindowsFormsApp1
             TabPageAdmin.Controls.Add(TypeBox);
             TabPageAdmin.Controls.Add(ConditionBox);
             TabPageAdmin.Controls.Add(DoorsBox);
+            TabPageAdmin.Controls.Add(InvoiceBox);
 
             TabPageAdmin.Controls.Add(LabelBrand);
             TabPageAdmin.Controls.Add(LabelModel);
@@ -124,8 +169,19 @@ namespace WindowsFormsApp1
             TabPageAdmin.Controls.Add(LabelType);
             TabPageAdmin.Controls.Add(LabelCondition);
             TabPageAdmin.Controls.Add(LabelDoors);
+            TabPageAdmin.Controls.Add(LabelInvoice);
+            TabPageAdmin.Controls.Add(LabelAddCars);
+            TabPageAdmin.Controls.Add(LabelReports);
 
-            TabPageAdmin.Controls.Add(Button0);
+
+            TabPageAdmin.Controls.Add(ButtonAddCar);
+            TabPageAdmin.Controls.Add(ButtonIncoming);
+            TabPageAdmin.Controls.Add(ButtonOutgoing);
+        }
+
+        private void InitTabPageReports() 
+        { 
+        
         }
 
         private void SetupTabControl() 
@@ -134,22 +190,26 @@ namespace WindowsFormsApp1
             tb.BackColor = Color.White;
             tb.ForeColor = Color.Black;
             tb.Font = new Font("Corbel", 10);
-            tb.Width = 1325;
-            tb.Height = 455;
+            tb.Width = 1425;
+            tb.Height = 700;
             Controls.Add(tb);
 
             TabPageCars = ControlsHelper.GenerateTabPage("Cars", tb);
             TabPageConfigurator = ControlsHelper.GenerateTabPage("Configurator", tb);
             TabPageFinancial = ControlsHelper.GenerateTabPage("Financial", tb);
             TabPageAdmin = ControlsHelper.GenerateTabPage("Admin", tb);
+            TabPageReports = ControlsHelper.GenerateTabPage("Reports", tb);
 
-            InitTabPage4();
+            TabPageCars.Controls.Add(carsDataGridView);
+            TabPageReports.Controls.Add(reportsDataGridView);
 
-            TabPageCars.Controls.Add(carsDataGridView);                    
+            ButtonAddCar = ControlsHelper.GenerateButtonX(new Point(1110, 350), "Add Car", 70, 30);
+            ButtonIncoming = ControlsHelper.GenerateButtonX(new Point(100, 550), "Incoming Report", 150, 30);
+            ButtonOutgoing = ControlsHelper.GenerateButtonX(new Point(300, 550), "Outgoing Report", 150, 30);
 
-            Button0 = ControlsHelper.GenerateButtonX(new Point(1125, 350), "Add Car");
+            InitTabPageAdmin();
 
-            Button0.Click += button1_Click;
+            ButtonAddCar.Click += button1_Click;
         }       
 
         private void TextBoxRequired_Validating(object sender, CancelEventArgs e)
@@ -178,19 +238,37 @@ namespace WindowsFormsApp1
             }
         }
 
-        private void SetupDataGridView()
+        private void carsDataGridView_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
         {
-            carsDataGridView.ColumnCount = 13;
+            var grid = sender as DataGridView;
+            var rowIdx = (e.RowIndex + 1).ToString();
+
+            var centerFormat = new StringFormat()
+            {
+                // right alignment might actually make more sense for numbers
+                Alignment = StringAlignment.Center,
+                LineAlignment = StringAlignment.Center
+            };
+
+            var headerBounds = new Rectangle(e.RowBounds.Left, e.RowBounds.Top, grid.RowHeadersWidth, e.RowBounds.Height);
+            e.Graphics.DrawString(rowIdx, this.Font, SystemBrushes.ControlText, headerBounds, centerFormat);
+        }
+
+        private void SetupDataGridViewCars()
+        {
+            carsDataGridView.ColumnCount = 1;
 
             carsDataGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
             carsDataGridView.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             carsDataGridView.DefaultCellStyle.ForeColor = Color.Black;
             carsDataGridView.ColumnHeadersDefaultCellStyle.Font =
                 new Font(carsDataGridView.Font, FontStyle.Bold);
+            
+            carsDataGridView.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(carsDataGridView_RowPostPaint);
 
             carsDataGridView.Name = "carsDataGridView";
             carsDataGridView.Location = new Point(8, 8);
-            carsDataGridView.Size = new Size(1200, 455);
+            carsDataGridView.Size = new Size(1425, 700);
             carsDataGridView.AutoSizeRowsMode =
                 DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
             carsDataGridView.ColumnHeadersBorderStyle =
@@ -199,21 +277,22 @@ namespace WindowsFormsApp1
             carsDataGridView.GridColor = Color.Black;
             carsDataGridView.RowHeadersVisible = false;
 
-            carsDataGridView.Columns[0].Name = "Brand";
-            carsDataGridView.Columns[1].Name = "Model";
-            carsDataGridView.Columns[2].Name = "Price";
-            carsDataGridView.Columns[3].Name = "Park";
-            carsDataGridView.Columns[4].Name = "Hp";
-            carsDataGridView.Columns[5].Name = "Color";
-            carsDataGridView.Columns[6].Name = "Year";
-            carsDataGridView.Columns[7].Name = "Km";
-            carsDataGridView.Columns[8].Name = "Engine";
-            carsDataGridView.Columns[9].Name = "Fuel";
-            carsDataGridView.Columns[10].Name = "Type";
-            carsDataGridView.Columns[11].Name = "Condition";
-            carsDataGridView.Columns[12].Name = "Doors";
-            carsDataGridView.Columns[12].DefaultCellStyle.Font =
-                new Font(carsDataGridView.DefaultCellStyle.Font, FontStyle.Italic);
+            carsDataGridView.Columns[0].Name = "Index";
+            //carsDataGridView.Columns[1].Name = "Model";
+            //carsDataGridView.Columns[2].Name = "Price";
+            //carsDataGridView.Columns[3].Name = "Park";
+            //carsDataGridView.Columns[4].Name = "Hp";
+            //carsDataGridView.Columns[5].Name = "Color";
+            //carsDataGridView.Columns[6].Name = "Year";
+            //carsDataGridView.Columns[7].Name = "Km";
+            //carsDataGridView.Columns[8].Name = "Engine";
+            //carsDataGridView.Columns[9].Name = "Fuel";
+            //carsDataGridView.Columns[10].Name = "Type";
+            //carsDataGridView.Columns[11].Name = "Condition";
+            //carsDataGridView.Columns[12].Name = "Doors";
+
+            //carsDataGridView.Columns[13].DefaultCellStyle.Font =
+                //new Font(carsDataGridView.DefaultCellStyle.Font, FontStyle.Italic);
 
             carsDataGridView.SelectionMode =
                 DataGridViewSelectionMode.FullRowSelect;
@@ -221,10 +300,81 @@ namespace WindowsFormsApp1
             carsDataGridView.Dock = DockStyle.Fill;
         }
 
-       
+        private void SetupDataGridViewReports()
+        {
+            reportsDataGridView.ColumnCount = 1;
+
+            reportsDataGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
+            reportsDataGridView.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            reportsDataGridView.DefaultCellStyle.ForeColor = Color.Black;
+            reportsDataGridView.ColumnHeadersDefaultCellStyle.Font =
+                new Font(carsDataGridView.Font, FontStyle.Bold);
+
+            reportsDataGridView.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(carsDataGridView_RowPostPaint);
+
+            reportsDataGridView.Name = "reportsDataGridView";
+            reportsDataGridView.Location = new Point(8, 8);
+            reportsDataGridView.Size = new Size(1425, 700);
+            reportsDataGridView.AutoSizeRowsMode =
+                DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
+            reportsDataGridView.ColumnHeadersBorderStyle =
+                DataGridViewHeaderBorderStyle.Single;
+            reportsDataGridView.CellBorderStyle = DataGridViewCellBorderStyle.Single;
+            reportsDataGridView.GridColor = Color.Black;
+            reportsDataGridView.RowHeadersVisible = false;
+
+            reportsDataGridView.Columns[0].Name = "Index";
+
+            //carsDataGridView.Columns[13].DefaultCellStyle.Font =
+            //new Font(carsDataGridView.DefaultCellStyle.Font, FontStyle.Italic);
+
+            reportsDataGridView.SelectionMode =
+                DataGridViewSelectionMode.FullRowSelect;
+            reportsDataGridView.MultiSelect = false;
+            reportsDataGridView.Dock = DockStyle.Fill;
+        }
+        private void InsertCar(Car car) {
+
+            DateTime localDate = DateTime.Now;
+
+
+            string insertCar = "INSERT INTO dbo.CarsApp " + 
+                "VALUES(@Brand, @Model, @Price, @Park, @Hp, @Color, @Year, @Km, @Engine, @Fuel, @Type, @Condition, @Doors, @Invoice, @localDate)";
+
+            using (var connection = new SqlConnection(
+                   "Server=AVG-188;" +
+                   "Database=Cars; Integrated Security=True;" +
+                   "TrustServerCertificate=False;Connection Timeout=30;"
+                   ))
+            using (SqlCommand cmd = new SqlCommand(insertCar, connection))
+            {
+                cmd.Parameters.Add("@Brand", SqlDbType.VarChar, 50).Value = car.Brand;
+                cmd.Parameters.Add("@Model", SqlDbType.VarChar, 50).Value = car.Model;
+                cmd.Parameters.Add("@Price", SqlDbType.Int).Value = car.Price;
+                cmd.Parameters.Add("@Park", SqlDbType.VarChar, 50).Value = car.Park;
+                cmd.Parameters.Add("@Hp", SqlDbType.Int).Value = car.Hp;
+                cmd.Parameters.Add("@Color", SqlDbType.VarChar, 50).Value = car.Color;
+                cmd.Parameters.Add("@Year", SqlDbType.Int).Value = car.Year;
+                cmd.Parameters.Add("@Km", SqlDbType.Int).Value = car.Km;
+                cmd.Parameters.Add("@Engine", SqlDbType.Int).Value = car.Engine;
+                cmd.Parameters.Add("@Fuel", SqlDbType.VarChar, 50).Value = car.Fuel;
+                cmd.Parameters.Add("@Type", SqlDbType.VarChar, 50).Value = car.Type;
+                cmd.Parameters.Add("@Condition", SqlDbType.VarChar, 50).Value = car.Condition;
+                cmd.Parameters.Add("@Doors", SqlDbType.Int).Value = car.Doors;
+                cmd.Parameters.Add("@Invoice", SqlDbType.VarChar).Value = car.Invoice;
+                cmd.Parameters.Add("@localDate", SqlDbType.DateTime).Value = localDate;
+
+                connection.Open();
+                cmd.ExecuteNonQuery();
+            }
+
+
+        }
+
 
         private void button1_Click(object sender, EventArgs e)
         {
+
             var price = 0;
             var hp = 0;
             var year = 0;
@@ -280,6 +430,7 @@ namespace WindowsFormsApp1
                 Type = TypeBox.Text,
                 Condition = ConditionBox.Text,
                 Doors = doors,
+                Invoice = InvoiceBox.Text,
             };
 
             //Clear inputs
@@ -296,25 +447,30 @@ namespace WindowsFormsApp1
             TypeBox.Clear();
             ConditionBox.Clear();
             DoorsBox.Clear();
+            InvoiceBox.Clear();
 
             //Add new car to listView
-            var DataGridViewItem = new string[]
-            { newCar.Brand,
-                newCar.Model,
-                newCar.Price.ToString(),
-                newCar.Park,
-                newCar.Hp.ToString(),
-                newCar.Color,
-                newCar.Year.ToString(),
-                newCar.Km.ToString(),
-                newCar.Engine.ToString(),
-                newCar.Fuel,
-                newCar.Type,
-                newCar.Condition,
-                newCar.Doors.ToString()
-            };
 
-            carsDataGridView.Rows.Add(DataGridViewItem);
+            //var DataGridViewItem = new string[]
+            //{ newCar.Brand,
+            //    newCar.Model,
+            //    newCar.Price.ToString(),
+            //    newCar.Park,
+            //    newCar.Hp.ToString(),
+            //    newCar.Color,
+            //    newCar.Year.ToString(),
+            //    newCar.Km.ToString(),
+            //    newCar.Engine.ToString(),
+            //    newCar.Fuel,
+            //    newCar.Type,
+            //    newCar.Condition,
+            //    newCar.Doors.ToString()
+            //};
+
+            //carsDataGridView.Rows.Add(DataGridViewItem);
+
+            InsertCar(newCar);
+            LoadData();
         }
 
         private void bindingSource1_CurrentChanged(object sender, EventArgs e)

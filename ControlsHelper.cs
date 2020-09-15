@@ -29,11 +29,13 @@ namespace WindowsFormsApp1
             return LabelX;
         }
 
-        public static Button GenerateButtonX(Point position, string Text)
+        public static Button GenerateButtonX(Point position, string Text, int Width, int Height)
         {
             Button ButtonX = new Button();
             ButtonX.Font = new Font("Microsoft Sans Serif", 11);
             ButtonX.Text = Text;
+            ButtonX.Width = Width;
+            ButtonX.Height = Height;
             ButtonX.Location = position;
             ButtonX.ForeColor = Color.Black;
 
