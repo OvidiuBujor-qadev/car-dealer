@@ -154,7 +154,52 @@ namespace WindowsFormsApp1
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private bool SendingStopped(Car car) 
+        {
+            if (string.IsNullOrEmpty(car.Brand)) 
+            {
+                MessageBox.Show("Brand is required");
+                return false;
+            }
+            if (string.IsNullOrEmpty(car.Model))
+            {
+                MessageBox.Show("Model is required");
+                return false;
+            }
+            if (string.IsNullOrEmpty(car.Park))
+            {
+                MessageBox.Show("Park is required");
+                return false;
+            }
+            if (string.IsNullOrEmpty(car.Color))
+            {
+                MessageBox.Show("Color is required");
+                return false;
+            }
+            if (string.IsNullOrEmpty(car.Fuel))
+            {
+                MessageBox.Show("Fuel is required");
+                return false;
+            }
+            if (string.IsNullOrEmpty(car.Type))
+            {
+                MessageBox.Show("Type is required");
+                return false;
+            }
+            if (string.IsNullOrEmpty(car.Condition))
+            {
+                MessageBox.Show("Condition is required");
+                return false;
+            }
+            if (string.IsNullOrEmpty(car.Invoice))
+            {
+                MessageBox.Show("Invoice is required");
+                return false;
+            }
+            return true;
+        }
+
+        private void ParsingValidation() 
         {
             var price = 0;
             var hp = 0;
@@ -193,6 +238,18 @@ namespace WindowsFormsApp1
             {
                 MessageBox.Show("Parsing of doors failed");
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var price = 0;
+            var hp = 0;
+            var year = 0;
+            var km = 0;
+            var engine = 0;
+            var doors = 0;
+
+            ParsingValidation();
 
             //Create new Car Object from form
             var newCar = new Car
@@ -212,6 +269,12 @@ namespace WindowsFormsApp1
                 Doors = doors,
                 Invoice = InvoiceBox.Text,
             };
+
+            var validCar = SendingStopped(newCar);
+            if (!validCar) 
+            {
+                return;
+            }
 
             //Clear inputs
             BrandBox.Clear();
