@@ -11,6 +11,7 @@ namespace WindowsFormsApp1
 {
     public partial class Form1 : Form
     {
+        private Configurator configurator;
         private AddCarForm addCarForm;
         private TabPage TabPageCars;
         private TabPage TabPageConfigurator;
@@ -27,6 +28,7 @@ namespace WindowsFormsApp1
         {
             this.Load += new EventHandler(Form1_Load);
             addCarForm = new AddCarForm();
+            configurator = new Configurator();
         }
 
         private void LoadData() {
@@ -64,7 +66,7 @@ namespace WindowsFormsApp1
         }
         private void SetupLayout()
         {
-            this.Size = new Size(1425, 750);
+            this.Size = new Size(1425, 800);
         }
 
 
@@ -75,7 +77,7 @@ namespace WindowsFormsApp1
             tb.ForeColor = Color.Black;
             tb.Font = new Font("Corbel", 10);
             tb.Width = 1425;
-            tb.Height = 700;
+            tb.Height = 800;
             Controls.Add(tb);
 
             TabPageCars = ControlsHelper.GenerateTabPage("Cars", tb);
@@ -91,6 +93,7 @@ namespace WindowsFormsApp1
             ButtonOutgoing = ControlsHelper.GenerateButtonX(new Point(300, 550), "Outgoing Report", 150, 30);
 
             addCarForm.InitAddCarForm(TabPageAdmin, LoadData);
+            configurator.InitAddTextBoxes(TabPageConfigurator);
         }       
        
 
@@ -101,7 +104,6 @@ namespace WindowsFormsApp1
 
             var centerFormat = new StringFormat()
             {
-                // right alignment might actually make more sense for numbers
                 Alignment = StringAlignment.Center,
                 LineAlignment = StringAlignment.Center
             };
@@ -134,21 +136,6 @@ namespace WindowsFormsApp1
             carsDataGridView.RowHeadersVisible = false;
 
             carsDataGridView.Columns[0].Name = "Index";
-            //carsDataGridView.Columns[1].Name = "Model";
-            //carsDataGridView.Columns[2].Name = "Price";
-            //carsDataGridView.Columns[3].Name = "Park";
-            //carsDataGridView.Columns[4].Name = "Hp";
-            //carsDataGridView.Columns[5].Name = "Color";
-            //carsDataGridView.Columns[6].Name = "Year";
-            //carsDataGridView.Columns[7].Name = "Km";
-            //carsDataGridView.Columns[8].Name = "Engine";
-            //carsDataGridView.Columns[9].Name = "Fuel";
-            //carsDataGridView.Columns[10].Name = "Type";
-            //carsDataGridView.Columns[11].Name = "Condition";
-            //carsDataGridView.Columns[12].Name = "Doors";
-
-            //carsDataGridView.Columns[13].DefaultCellStyle.Font =
-                //new Font(carsDataGridView.DefaultCellStyle.Font, FontStyle.Italic);
 
             carsDataGridView.SelectionMode =
                 DataGridViewSelectionMode.FullRowSelect;

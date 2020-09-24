@@ -94,20 +94,20 @@ namespace WindowsFormsApp1
 
         private void InitTextBoxes()
         {
-            BrandBox = ControlsHelper.GenerateTexBox(new Point(100, 100), new TextBoxEventsParameters(null, TextBoxRequired_Validating));
-            ModelBox = ControlsHelper.GenerateTexBox(new Point(300, 100), new TextBoxEventsParameters(null, TextBoxRequired_Validating));
-            PriceBox = ControlsHelper.GenerateTexBox(new Point(500, 100), new TextBoxEventsParameters(TextBoxOnlyNumbers_TextChanged, TextBoxRequired_Validating));
-            ParkBox = ControlsHelper.GenerateTexBox(new Point(700, 100), new TextBoxEventsParameters(null, TextBoxRequired_Validating));
-            HpBox = ControlsHelper.GenerateTexBox(new Point(900, 100), new TextBoxEventsParameters(TextBoxOnlyNumbers_TextChanged, TextBoxRequired_Validating));
-            ColorBox = ControlsHelper.GenerateTexBox(new Point(1100, 100), new TextBoxEventsParameters(null, TextBoxRequired_Validating));
-            YearBox = ControlsHelper.GenerateTexBox(new Point(100, 200), new TextBoxEventsParameters(TextBoxOnlyNumbers_TextChanged, TextBoxRequired_Validating));
-            KmBox = ControlsHelper.GenerateTexBox(new Point(300, 200), new TextBoxEventsParameters(TextBoxOnlyNumbers_TextChanged, TextBoxRequired_Validating));
-            EngineBox = ControlsHelper.GenerateTexBox(new Point(500, 200), new TextBoxEventsParameters(TextBoxOnlyNumbers_TextChanged, TextBoxRequired_Validating));
-            FuelBox = ControlsHelper.GenerateTexBox(new Point(700, 200), new TextBoxEventsParameters(null, TextBoxRequired_Validating));
-            TypeBox = ControlsHelper.GenerateTexBox(new Point(900, 200), new TextBoxEventsParameters(null, TextBoxRequired_Validating));
-            ConditionBox = ControlsHelper.GenerateTexBox(new Point(1100, 200), new TextBoxEventsParameters(null, TextBoxRequired_Validating));
-            DoorsBox = ControlsHelper.GenerateTexBox(new Point(100, 300), new TextBoxEventsParameters(TextBoxOnlyNumbers_TextChanged, TextBoxRequired_Validating));
-            InvoiceBox = ControlsHelper.GenerateTexBox(new Point(300, 300), new TextBoxEventsParameters(null, TextBoxRequired_Validating));
+            BrandBox = ControlsHelper.GenerateTexBox(new Point(100, 100), new TextBoxEventsParameters(null, TextBoxRequired_Validating), false);
+            ModelBox = ControlsHelper.GenerateTexBox(new Point(300, 100), new TextBoxEventsParameters(null, TextBoxRequired_Validating), false);
+            PriceBox = ControlsHelper.GenerateTexBox(new Point(500, 100), new TextBoxEventsParameters(TextBoxOnlyNumbers_TextChanged, TextBoxRequired_Validating), false);
+            ParkBox = ControlsHelper.GenerateTexBox(new Point(700, 100), new TextBoxEventsParameters(null, TextBoxRequired_Validating), false);
+            HpBox = ControlsHelper.GenerateTexBox(new Point(900, 100), new TextBoxEventsParameters(TextBoxOnlyNumbers_TextChanged, TextBoxRequired_Validating), false);
+            ColorBox = ControlsHelper.GenerateTexBox(new Point(1100, 100), new TextBoxEventsParameters(null, TextBoxRequired_Validating), false);
+            YearBox = ControlsHelper.GenerateTexBox(new Point(100, 200), new TextBoxEventsParameters(TextBoxOnlyNumbers_TextChanged, TextBoxRequired_Validating), false);
+            KmBox = ControlsHelper.GenerateTexBox(new Point(300, 200), new TextBoxEventsParameters(TextBoxOnlyNumbers_TextChanged, TextBoxRequired_Validating), false);
+            EngineBox = ControlsHelper.GenerateTexBox(new Point(500, 200), new TextBoxEventsParameters(TextBoxOnlyNumbers_TextChanged, TextBoxRequired_Validating), false);
+            FuelBox = ControlsHelper.GenerateTexBox(new Point(700, 200), new TextBoxEventsParameters(null, TextBoxRequired_Validating), false);
+            TypeBox = ControlsHelper.GenerateTexBox(new Point(900, 200), new TextBoxEventsParameters(null, TextBoxRequired_Validating), false);
+            ConditionBox = ControlsHelper.GenerateTexBox(new Point(1100, 200), new TextBoxEventsParameters(null, TextBoxRequired_Validating), false);
+            DoorsBox = ControlsHelper.GenerateTexBox(new Point(100, 300), new TextBoxEventsParameters(TextBoxOnlyNumbers_TextChanged, TextBoxRequired_Validating), false);
+            InvoiceBox = ControlsHelper.GenerateTexBox(new Point(300, 300), new TextBoxEventsParameters(null, TextBoxRequired_Validating), false);
         }
 
         private void InitLabels()

@@ -7,11 +7,12 @@ namespace WindowsFormsApp1
 {
     public static class ControlsHelper
     {
-        public static TextBox GenerateTexBox(Point position, TextBoxEventsParameters eventParams)
+        public static TextBox GenerateTexBox(Point position, TextBoxEventsParameters eventParams, bool sofa)
         {
             TextBox txtBox = new TextBox();
             txtBox.Size = new Size(100, 25);
             txtBox.Location = position;
+            txtBox.ReadOnly = sofa;
             txtBox.BorderStyle = BorderStyle.Fixed3D;
             txtBox.Validating += eventParams.Validating;
             txtBox.TextChanged += eventParams.TextChanged;
